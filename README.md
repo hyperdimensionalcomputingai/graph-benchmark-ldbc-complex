@@ -53,29 +53,6 @@ The schema uses separate relationship types such as `postHasCreator` and `commen
 
 These queries are complex on several counts: they traverse multiple hops, join different node and relationship types, preserve partial results through optional matches, aggregate nested results, and rank the final output. The examples below show how those operations combine in a single query.
 
-### Example: Q14 — trusted connection paths
-
-Given two people, Q14 (IC14) finds **every shortest friendship path** between them, then ranks those paths by how much neighbouring people have interacted. In this suite, the endpoints are person `1131` and person `19791209300775`.
-
-The Neo4j query starts by finding paths through `knows` relationships in either direction:
-
-```cypher
-MATCH path = allShortestPaths(
-    (person1:Person {ID: $person1Id})-[:knows*0..]-(person2:Person {ID: $person2Id})
-)
-```
-
-For each adjacent pair of people along each path, it counts replies in both directions:
-
-| Interaction between the pair | Contribution to path weight |
-| --- | ---: |
-| A comment replying to the other person's post | 1.0 |
-| A comment replying to the other person's comment | 0.5 |
-
-It sums these contributions across the path and returns the ordered person IDs and total weight, highest weight first. “Shortest” means fewest friendship hops; interaction weights rank those shortest paths afterwards.
-
-This combines variable-length traversal, enumeration of all shortest paths, additional traversals through comments and posts for every friendship step, aggregation and sorting. See `run_query14` in the [Neo4j implementation](neo4j/query.py) for the complete query.
-
 ### Example: Q1 — friends, universities and employers
 
 Q1 (IC1) finds people named `Jose` within three friendship hops of person `1131`, selects the nearest 20, and enriches their profiles with their city, universities and employers. Here is the full query from the [Neo4j implementation](neo4j/query.py):
@@ -121,6 +98,29 @@ LIMIT 20
 The two `OPTIONAL MATCH` clauses keep a person in the result even when they have no matching university or employer. Each education or employment match also traverses to the organization's location. The intervening `WITH` and `collect()` clauses group education records before expanding employment records, avoiding a cross-product of the two lists. Null handling produces empty lists for missing records, while the final sort restores the requested distance, name and ID order.
 
 This query combines bounded shortest-path search, filtering, a top-20 selection, optional multi-hop joins, nested-list aggregation and final ordering.
+
+### Example: Q14 — trusted connection paths
+
+Given two people, Q14 (IC14) finds **every shortest friendship path** between them, then ranks those paths by how much neighbouring people have interacted. In this suite, the endpoints are person `1131` and person `19791209300775`.
+
+The Neo4j query starts by finding paths through `knows` relationships in either direction:
+
+```cypher
+MATCH path = allShortestPaths(
+    (person1:Person {ID: $person1Id})-[:knows*0..]-(person2:Person {ID: $person2Id})
+)
+```
+
+For each adjacent pair of people along each path, it counts replies in both directions:
+
+| Interaction between the pair | Contribution to path weight |
+| --- | ---: |
+| A comment replying to the other person's post | 1.0 |
+| A comment replying to the other person's comment | 0.5 |
+
+It sums these contributions across the path and returns the ordered person IDs and total weight, highest weight first. “Shortest” means fewest friendship hops; interaction weights rank those shortest paths afterwards.
+
+This combines variable-length traversal, enumeration of all shortest paths, additional traversals through comments and posts for every friendship step, aggregation and sorting. See `run_query14` in the [Neo4j implementation](neo4j/query.py) for the complete query.
 
 ### Query adaptations and checks
 
