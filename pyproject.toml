@@ -1,0 +1,19 @@
+[project]
+name = "graph-benchmark-ldbc-complex"
+version = "0.1.0"
+description = "LDBC SNB Interactive complex queries on the LDBC SNB SF1 dataset, benchmarked across graph systems with pytest-benchmark"
+license = "Apache-2.0 AND MIT"
+license-files = ["LICENSE", "LICENSES/*.txt", "NOTICE.txt", "THIRD_PARTY_NOTICES.md"]
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "kuzu>=0.11.3",
+    "ladybug==0.21.2",
+    "neo4j>=6.1.0",
+    "polars>=1.37.1",
+    "pyarrow>=23.0.0",
+    "pytest>=9.0.2",
+    "pytest-asyncio>=1.3.0",
+    "pytest-benchmark>=5.2.3",
+    "python-dotenv>=1.2.1",
+]

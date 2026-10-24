@@ -1,0 +1,74 @@
+[
+  {
+    "friendId": 8824,
+    "friendFirstName": "Antonio",
+    "friendLastName": "Gonzales",
+    "xCount": 1,
+    "yCount": 2,
+    "xyCount": 3
+  },
+  {
+    "friendId": 9116,
+    "friendFirstName": "Adriaan",
+    "friendLastName": "Dijk",
+    "xCount": 1,
+    "yCount": 2,
+    "xyCount": 3
+  },
+  {
+    "friendId": 2199023259756,
+    "friendFirstName": "Sam",
+    "friendLastName": "Carter",
+    "xCount": 1,
+    "yCount": 2,
+    "xyCount": 3
+  },
+  {
+    "friendId": 1847,
+    "friendFirstName": "K.",
+    "friendLastName": "Singh",
+    "xCount": 1,
+    "yCount": 1,
+    "xyCount": 2
+  },
+  {
+    "friendId": 7725,
+    "friendFirstName": "Shweta",
+    "friendLastName": "Khan",
+    "xCount": 1,
+    "yCount": 1,
+    "xyCount": 2
+  },
+  {
+    "friendId": 8808,
+    "friendFirstName": "Arun",
+    "friendLastName": "Singh",
+    "xCount": 1,
+    "yCount": 1,
+    "xyCount": 2
+  },
+  {
+    "friendId": 9695,
+    "friendFirstName": "John",
+    "friendLastName": "Khan",
+    "xCount": 1,
+    "yCount": 1,
+    "xyCount": 2
+  },
+  {
+    "friendId": 2199023256437,
+    "friendFirstName": "Rudolf",
+    "friendLastName": "Engel",
+    "xCount": 1,
+    "yCount": 1,
+    "xyCount": 2
+  },
+  {
+    "friendId": 4398046513018,
+    "friendFirstName": "Deepak",
+    "friendLastName": "Kumar",
+    "xCount": 1,
+    "yCount": 1,
+    "xyCount": 2
+  }
+]
