@@ -51,6 +51,31 @@ The schema uses separate relationship types such as `postHasCreator` and `commen
 
 ## Queries and correctness
 
+### Example: Q14 — trusted connection paths
+
+Given two people, Q14 (IC14) finds **every shortest friendship path** between them, then ranks those paths by how much neighbouring people have interacted. In this suite, the endpoints are person `1131` and person `19791209300775`.
+
+The Neo4j query starts by finding paths through `knows` relationships in either direction:
+
+```cypher
+MATCH path = allShortestPaths(
+    (person1:Person {ID: $person1Id})-[:knows*0..]-(person2:Person {ID: $person2Id})
+)
+```
+
+For each adjacent pair of people along each path, it counts replies in both directions:
+
+| Interaction between the pair | Contribution to path weight |
+| --- | ---: |
+| A comment replying to the other person's post | 1.0 |
+| A comment replying to the other person's comment | 0.5 |
+
+It sums these contributions across the path and returns the ordered person IDs and total weight, highest weight first. “Shortest” means fewest friendship hops; interaction weights rank those shortest paths afterwards.
+
+This combines variable-length traversal, enumeration of all shortest paths, additional traversals through comments and posts for every friendship step, aggregation and sorting. See `run_query14` in the [Neo4j implementation](neo4j/query.py) for the complete query.
+
+### Query adaptations and checks
+
 Each engine's `query.py` implements IC1–IC14. The module docstrings describe the adaptations from the official Cypher:
 
 - `Message` becomes Post/Comment label or relationship alternatives.
