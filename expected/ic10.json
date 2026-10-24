@@ -1,0 +1,82 @@
+[
+  {
+    "personId": 19791209305691,
+    "personFirstName": "Rajiv",
+    "personLastName": "Singh",
+    "commonInterestScore": 11,
+    "personGender": "male",
+    "personCityName": "Thanjavur"
+  },
+  {
+    "personId": 28587302327580,
+    "personFirstName": "Mahamane",
+    "personLastName": "Maazou",
+    "commonInterestScore": 10,
+    "personGender": "male",
+    "personCityName": "Tahoua"
+  },
+  {
+    "personId": 24189255821174,
+    "personFirstName": "K.",
+    "personLastName": "Khan",
+    "commonInterestScore": 9,
+    "personGender": "female",
+    "personCityName": "Kozhikode"
+  },
+  {
+    "personId": 6079,
+    "personFirstName": "Antonio",
+    "personLastName": "Colombo",
+    "commonInterestScore": 8,
+    "personGender": "female",
+    "personCityName": "Rome"
+  },
+  {
+    "personId": 24189255819196,
+    "personFirstName": "Michael",
+    "personLastName": "Li",
+    "commonInterestScore": 8,
+    "personGender": "male",
+    "personCityName": "Beizhen"
+  },
+  {
+    "personId": 13194139535446,
+    "personFirstName": "Chen",
+    "personLastName": "Li",
+    "commonInterestScore": 7,
+    "personGender": "female",
+    "personCityName": "Shanxi"
+  },
+  {
+    "personId": 24189255814688,
+    "personFirstName": "Yang",
+    "personLastName": "Zhang",
+    "commonInterestScore": 2,
+    "personGender": "male",
+    "personCityName": "Anshun"
+  },
+  {
+    "personId": 28587302330869,
+    "personFirstName": "Crown Prince",
+    "personLastName": "Bombo",
+    "commonInterestScore": 1,
+    "personGender": "female",
+    "personCityName": "Pokhara"
+  },
+  {
+    "personId": 8796093028406,
+    "personFirstName": "Cristian",
+    "personLastName": "Escalona",
+    "commonInterestScore": 0,
+    "personGender": "male",
+    "personCityName": "Cali"
+  },
+  {
+    "personId": 17592186051575,
+    "personFirstName": "Arjun",
+    "personLastName": "Singh",
+    "commonInterestScore": 0,
+    "personGender": "female",
+    "personCityName": "Kadapa"
+  }
+]

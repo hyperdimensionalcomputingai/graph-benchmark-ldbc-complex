@@ -218,3 +218,15 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Local data, databases and run output
+csv
+social_network-sf1-CsvBasic-StringDateFormatter.tar.zst
+*.kuzu
+*.lbdb
+*.lbug
+*.lance
+*.duckdb
+*.duckdb.wal
+results/2026*
+logs/

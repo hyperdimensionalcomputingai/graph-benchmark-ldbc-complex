@@ -1,0 +1,28 @@
+# Third-party provenance and notices
+
+This inventory covers the software, query adaptations and third-party materials used by this repository.
+
+## Software licensing
+
+The root [LICENSE](LICENSE) is copied byte-for-byte from `graph-benchmark-ldbc`, following its [PR #30](https://github.com/hyperdimensionalcomputingai/graph-benchmark-ldbc/pull/30). Apache License 2.0 applies to this derivative and future contributions. The retained MIT licence, including `Copyright (c) 2026 Prashanth Rao`, is preserved unchanged in [LICENSES/MIT.txt](LICENSES/MIT.txt) for inherited MIT-covered portions.
+
+The combined software is described by `Apache-2.0 AND MIT`, not a choice between licences. Earlier MIT grants remain in force. The project does not assign copyright or represent earlier MIT contributors as newly granting Apache's explicit patent rights. [Contribution guidance](CONTRIBUTING.md) applies prospectively. Third-party material and dependencies retain their own applicable terms.
+
+## Material inventory
+
+| Material | Source and terms | Adaptations and limits |
+| --- | --- | --- |
+| IC1–IC14 Cypher implementations in `neo4j/query.py`, `kuzu/query.py` and `ladybugdb/query.py` | [LDBC SNB Interactive v1 reference implementations](https://github.com/ldbc/ldbc_snb_interactive_v1_impls/tree/11db98cc2ba14c33492f6c0c34e68c8be7e22e5f/cypher/queries), Apache-2.0 | Adapted to per-pair relationship types, Place/Organisation nodes, an ID property, engine-specific dates and shortest-path syntax; IC1 omits unloaded emails/languages and changes null handling. Existing module docstrings identify these changes. The linked revision was reviewed on 2026-10-24; it is not claimed as the exact revision originally used. |
+| Shared fixed parameters | Fixed parameters beside each engine query; official query examples and local SF1 selections | Person IDs and IC3 countries are local selections. A single parameter set per query replaces generated driver parameters. |
+| SNB dataset and data model | [LDBC/GDC datasets](https://ldbcouncil.org/benchmarks/snb/datasets/), Interactive v1 initial SF1, CsvBasic, StringDateFormatter | Downloaded separately; local `csv` symlink and database files remain ignored. Software licences do not establish dataset redistribution rights. The Fair Use Policy is not an artefact-specific dataset licence. Confirm applicable terms before redistributing data or database files. |
+| `expected/ic*.json` | Query outputs generated using Neo4j over SNB SF1 | Used as correctness fixtures, not official LDBC validation answers. These contain derived dataset values; the software licence does not establish separate redistribution rights in those values. |
+| `assets/ldbc-snb-schema.png` | Generated with imagegen using the repository schema and previous diagram as references | Shows the eight node types and 23 relationships defined in `kuzu/etl/schema.cypher`. Generation prompt is retained in `assets/ldbc-snb-schema.prompt.md`. |
+| Python dependencies and container images | Dependencies pinned in `uv.lock`; engine Docker configuration | Separately licensed, not vendored or relicensed by this project. |
+
+## LDBC attribution
+
+We credit the Linked Data Benchmark Council (LDBC), now the Graph Data Council (GDC), for the Social Network Benchmark dataset, data model and query definitions. HDC Labs claims no ownership of these third-party works.
+
+Unlike the sibling custom-query repository, this suite includes adaptations of official Apache-licensed query implementations. The upstream [LICENSE.txt](https://github.com/ldbc/ldbc_snb_interactive_v1_impls/blob/11db98cc2ba14c33492f6c0c34e68c8be7e22e5f/LICENSE.txt) and [NOTICE.txt](https://github.com/ldbc/ldbc_snb_interactive_v1_impls/blob/11db98cc2ba14c33492f6c0c34e68c8be7e22e5f/NOTICE.txt) are retained in [LICENSES/LDBC-Apache-2.0.txt](LICENSES/LDBC-Apache-2.0.txt) and [NOTICE.txt](NOTICE.txt). The notice credits `Copyright [2020-]2025 Linked Data Benchmark Council`. Preserve applicable upstream notices when redistributing adaptations.
+
+**These are not LDBC Benchmark Results.** This adapted, fixed-parameter suite is unaudited and is not approved or endorsed by LDBC/GDC. See the [Fair Use Policy](https://ldbcouncil.org/benchmarks/fair-use-policies/). No blanket compliance claim is made.

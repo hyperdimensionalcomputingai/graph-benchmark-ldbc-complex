@@ -1,0 +1,72 @@
+[
+  {
+    "personId": 15393162790615,
+    "personFirstName": "Tamas",
+    "personLastName": "Nagy",
+    "organizationName": "ABC_Air_Hungary",
+    "organizationWorkFromYear": 1999
+  },
+  {
+    "personId": 2199023260232,
+    "personFirstName": "Bela",
+    "personLastName": "Laszlo",
+    "organizationName": "CityLine_Hungary",
+    "organizationWorkFromYear": 2000
+  },
+  {
+    "personId": 19791209303491,
+    "personFirstName": "George",
+    "personLastName": "Nagy",
+    "organizationName": "Travel_Service_(Hungary)",
+    "organizationWorkFromYear": 2001
+  },
+  {
+    "personId": 28587302329934,
+    "personFirstName": "Laszlo",
+    "personLastName": "Nagy",
+    "organizationName": "CityLine_Hungary",
+    "organizationWorkFromYear": 2001
+  },
+  {
+    "personId": 2199023260232,
+    "personFirstName": "Bela",
+    "personLastName": "Laszlo",
+    "organizationName": "Wizz_Air",
+    "organizationWorkFromYear": 2002
+  },
+  {
+    "personId": 2199023260232,
+    "personFirstName": "Bela",
+    "personLastName": "Laszlo",
+    "organizationName": "ABC_Air_Hungary",
+    "organizationWorkFromYear": 2002
+  },
+  {
+    "personId": 19791209303491,
+    "personFirstName": "George",
+    "personLastName": "Nagy",
+    "organizationName": "Mal\u00e9v_Hungarian_Airlines",
+    "organizationWorkFromYear": 2002
+  },
+  {
+    "personId": 19791209303491,
+    "personFirstName": "George",
+    "personLastName": "Nagy",
+    "organizationName": "Budapest_Aircraft_Service",
+    "organizationWorkFromYear": 2002
+  },
+  {
+    "personId": 28587302329934,
+    "personFirstName": "Laszlo",
+    "personLastName": "Nagy",
+    "organizationName": "Mal\u00e9v_Hungarian_Airlines",
+    "organizationWorkFromYear": 2002
+  },
+  {
+    "personId": 2199023260562,
+    "personFirstName": "Jun",
+    "personLastName": "Lu",
+    "organizationName": "CityLine_Hungary",
+    "organizationWorkFromYear": 2004
+  }
+]
