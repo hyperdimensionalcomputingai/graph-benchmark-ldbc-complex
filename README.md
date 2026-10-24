@@ -51,6 +51,8 @@ The schema uses separate relationship types such as `postHasCreator` and `commen
 
 ## Queries and correctness
 
+These queries are complex on several counts: they traverse multiple hops, join different node and relationship types, preserve partial results through optional matches, aggregate nested results, and rank the final output. The examples below show how those operations combine in a single query.
+
 ### Example: Q14 — trusted connection paths
 
 Given two people, Q14 (IC14) finds **every shortest friendship path** between them, then ranks those paths by how much neighbouring people have interacted. In this suite, the endpoints are person `1131` and person `19791209300775`.
@@ -73,6 +75,52 @@ For each adjacent pair of people along each path, it counts replies in both dire
 It sums these contributions across the path and returns the ordered person IDs and total weight, highest weight first. “Shortest” means fewest friendship hops; interaction weights rank those shortest paths afterwards.
 
 This combines variable-length traversal, enumeration of all shortest paths, additional traversals through comments and posts for every friendship step, aggregation and sorting. See `run_query14` in the [Neo4j implementation](neo4j/query.py) for the complete query.
+
+### Example: Q1 — friends, universities and employers
+
+Q1 (IC1) finds people named `Jose` within three friendship hops of person `1131`, selects the nearest 20, and enriches their profiles with their city, universities and employers. Here is the full query from the [Neo4j implementation](neo4j/query.py):
+
+```cypher
+MATCH (p:Person {ID: $personId}), (friend:Person {firstName: $firstName})
+WHERE NOT p = friend
+WITH p, friend
+MATCH path = shortestPath((p)-[:knows*1..3]-(friend))
+WITH min(length(path)) AS distance, friend
+ORDER BY distance ASC, friend.lastName ASC, friend.ID ASC
+LIMIT 20
+
+MATCH (friend)-[:personIsLocatedIn]->(friendCity:Place)
+OPTIONAL MATCH (friend)-[studyAt:studyAt]->(uni:Organisation)-[:organisationIsLocatedIn]->(uniCity:Place)
+WITH friend, collect(
+    CASE WHEN uni IS NULL THEN null
+        ELSE [uni.name, studyAt.classYear, uniCity.name]
+    END) AS unis, friendCity, distance
+
+OPTIONAL MATCH (friend)-[workAt:workAt]->(company:Organisation)-[:organisationIsLocatedIn]->(companyCountry:Place)
+WITH friend, collect(
+    CASE WHEN company IS NULL THEN null
+        ELSE [company.name, workAt.workFrom, companyCountry.name]
+    END) AS companies, unis, friendCity, distance
+
+RETURN
+    friend.ID AS friendId,
+    friend.lastName AS friendLastName,
+    distance AS distanceFromPerson,
+    friend.birthday AS friendBirthday,
+    friend.creationDate AS friendCreationDate,
+    friend.gender AS friendGender,
+    friend.browserUsed AS friendBrowserUsed,
+    friend.locationIP AS friendLocationIp,
+    friendCity.name AS friendCityName,
+    unis AS friendUniversities,
+    companies AS friendCompanies
+ORDER BY distanceFromPerson ASC, friendLastName ASC, friendId ASC
+LIMIT 20
+```
+
+The two `OPTIONAL MATCH` clauses keep a person in the result even when they have no matching university or employer. Each education or employment match also traverses to the organization's location. The intervening `WITH` and `collect()` clauses group education records before expanding employment records, avoiding a cross-product of the two lists. Null handling produces empty lists for missing records, while the final sort restores the requested distance, name and ID order.
+
+This query combines bounded shortest-path search, filtering, a top-20 selection, optional multi-hop joins, nested-list aggregation and final ordering.
 
 ### Query adaptations and checks
 
