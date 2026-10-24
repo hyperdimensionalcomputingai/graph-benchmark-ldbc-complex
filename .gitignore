@@ -219,7 +219,7 @@ __marimo__/
 # Streamlit
 .streamlit/secrets.toml
 
-# Migrated suite: local data, databases and run output
+# Local data, databases and run output
 csv
 social_network-sf1-CsvBasic-StringDateFormatter.tar.zst
 *.kuzu
