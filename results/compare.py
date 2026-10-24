@@ -16,7 +16,7 @@ HEADER_RE = re.compile(r"Name \(time in (?P<unit>[^)]+)\)")
 FAILED_RE = re.compile(r"^FAILED \S+::(?P<name>\S+) - (?P<error>\w+)")
 UNIT_TO_MS = {"s": 1000.0, "ms": 1.0, "us": 0.001, "µs": 0.001, "ns": 0.000001}
 # Column order; unlisted engines go last, alphabetically.
-ENGINE_ORDER = ["neo4j", "kuzu", "ladybug"]
+ENGINE_ORDER = ["neo4j", "kuzu", "ladybug", "lance-csr"]
 
 
 def engine_sort_key(path: Path) -> tuple[int, str]:

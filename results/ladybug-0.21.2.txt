@@ -1,0 +1,144 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.13.14, pytest-9.1.1, pluggy-1.7.0
+benchmark: 5.3.0 (defaults: timer=time.perf_counter disable_gc=True min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=5)
+rootdir: /Users/prrao/code/graph-benchmark-ldbc-complex
+configfile: pyproject.toml
+plugins: asyncio-1.4.0, benchmark-5.3.0
+asyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collected 14 items
+
+benchmark_query.py F............F                                        [100%]
+
+=================================== FAILURES ===================================
+____________________________ test_benchmark_query1 _____________________________
+
+benchmark = <pytest_benchmark.fixture.BenchmarkFixture object at 0x10796e510>
+connection = <ladybug.connection.Connection object at 0x10796e120>
+check_result = <function assert_golden at 0x1078eeb60>
+
+    def test_benchmark_query1(benchmark, connection, check_result):
+        result = benchmark(query.run_query1, connection)
+>       check_result("ic1", result)
+
+benchmark_query.py:24: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = 'ic1'
+result = shape: (20, 11)
+┌───────────┬───────────┬───────────┬───────────┬───┬───────────┬───────────┬───────────┬──────────┐
+│...      ┆ s", "2…  │
+└───────────┴───────────┴───────────┴───────────┴───┴───────────┴───────────┴───────────┴──────────┘
+lowercase_keys = False
+
+    def assert_golden(name: str, result: Any, *, lowercase_keys: bool = False) -> None:
+        rows = canonical_rows(result)
+        path = EXPECTED_DIR / f"{name}.json"
+        if os.environ.get("WRITE_GOLDEN") == "1":
+            path.write_text(json.dumps(rows, indent=2) + "\n")
+        expected = json.loads(path.read_text())
+        if lowercase_keys:
+            expected = [{k.lower(): v for k, v in row.items()} for row in expected]
+        if name in UNORDERED:
+            rows, expected = (sorted(r, key=lambda row: json.dumps(row, sort_keys=True)) for r in (rows, expected))
+        assert len(rows) == len(expected), f"{name}: {len(rows)} rows, expected {len(expected)}"
+        for i, (row, want) in enumerate(zip(rows, expected)):
+>           assert row == want, f"{name} row {i}: {row} != {want}"
+E           AssertionError: ic1 row 7: {'friendId': 32985348838091, 'friendLastName': 'Gonzales', 'distanceFromPerson': 2, 'friendBirthday': '1983-04-05', 'friendCreationDate': '2012-07-15T15:24:35.485', 'friendGender': 'female', 'friendBrowserUsed': 'Firefox', 'friendLocationIp': '101.78.30.92', 'friendCityName': 'San_Miguel', 'friendUniversities': [['Marcelo_H._del_Pilar_National_High_School', '2003', 'Malolos']], 'friendCompanies': [['Filipinas_Orient_Airways', '2004', 'Philippines'], ['Pacificair', '2004', 'Philippines'], ['Tair_Airways', '2004', 'Philippines']]} != {'friendId': 30786325587721, 'friendLastName': 'Garcia', 'distanceFromPerson': 2, 'friendBirthday': '1982-12-07', 'friendCreationDate': '2012-06-22T13:22:12.257', 'friendGender': 'female', 'friendBrowserUsed': 'Chrome', 'friendLocationIp': '112.198.238.228', 'friendCityName': 'Tagbilaran', 'friendUniversities': [['University_of_San_Jose–Recoletos', '2000', 'Cebu_City']], 'friendCompanies': []}
+E           assert {'friendId': ...3-04-05', ...} == {'friendId': ...2-12-07', ...}
+E             
+E             Omitting 2 identical items, use -vv to show
+E             Differing items:
+E             {'friendId': 32985348838091} != {'friendId': 30786325587721}
+E             {'friendLocationIp': '101.78.30.92'} != {'friendLocationIp': '112.198.238.228'}
+E             {'friendLastName': 'Gonzales'} != {'friendLastName': 'Garcia'}
+E             {'friendCityName': 'San_Miguel'} != {'friendCityName': 'Tagbilaran'}...
+E             
+E             ...Full output truncated (6 lines hidden), use '-vv' to show
+
+../conftest.py:59: AssertionError
+____________________________ test_benchmark_query14 ____________________________
+
+benchmark = <pytest_benchmark.fixture.BenchmarkFixture object at 0x10bff8690>
+connection = <ladybug.connection.Connection object at 0x10796e120>
+check_result = <function assert_golden at 0x1078eeb60>
+
+    def test_benchmark_query14(benchmark, connection, check_result):
+>       result = benchmark(query.run_query14, connection)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+benchmark_query.py:88: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+../.venv/lib/python3.13/site-packages/pytest_benchmark/fixture.py:195: in __call__
+    return self._raw(function_to_benchmark, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../.venv/lib/python3.13/site-packages/pytest_benchmark/fixture.py:227: in _raw
+    duration, iterations, loops_range = self._calibrate_timer(runner)
+                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../.venv/lib/python3.13/site-packages/pytest_benchmark/fixture.py:412: in _calibrate_timer
+    duration = runner(loops_range)
+               ^^^^^^^^^^^^^^^^^^^
+../.venv/lib/python3.13/site-packages/pytest_benchmark/fixture.py:147: in runner
+    function_to_benchmark(*args, **kwargs)
+query.py:399: in run_query14
+    return _execute(conn, "IC14", query, _params(params))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+query.py:44: in _execute
+    response = conn.execute(query, params)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../.venv/lib/python3.13/site-packages/ladybug/connection.py:889: in execute
+    query_result_internal = self._execute_with_pybind(query, parameters)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <ladybug.connection.Connection object at 0x10796e120>
+query = '\n        MATCH path = (person1:Person {ID: $person1Id})-[:knows* ALL SHORTEST 1..30]-(person2:Person {ID: $person2Id...] AS stepWeight\n        RETURN personIdsInPath, sum(stepWeight) AS pathWeight\n        ORDER BY pathWeight DESC\n    '
+parameters = {'person1Id': 1131, 'person2Id': 19791209300775}
+
+    def _execute_with_pybind(
+        self,
+        query: str,
+        parameters: dict[str, Any],
+    ) -> Any:
+        py_connection = self._get_pybind_connection()
+        if py_connection is None:
+            return None
+    
+        if len(parameters) == 0:
+            return py_connection.query(query)
+    
+        query, parameters = self._normalize_parameters_for_pybind(query, parameters)
+        with self._prepared_cache_lock:
+            prepared = self._get_or_prepare_pybind_statement(
+                py_connection, query, parameters
+            )
+>           return py_connection.execute(prepared, parameters)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           RuntimeError: Buffer manager exception: Unable to allocate memory! The buffer pool is full and no memory could be freed!
+
+../.venv/lib/python3.13/site-packages/ladybug/connection.py:779: RuntimeError
+
+-------------------------------------------------------------------------------------- benchmark: 13 tests --------------------------------------------------------------------------------------
+Name (time in ms)               Min                 Max                Mean             StdDev              Median                IQR            Outliers       OPS            Rounds  Iterations
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+test_benchmark_query1       26.0817 (11.58)     30.1221 (10.02)     27.0291 (10.79)     1.7362 (11.14)     26.3686 (10.69)     1.2575 (6.90)          1;1   36.9972 (0.09)          5           1
+test_benchmark_query10      12.2803 (5.45)      19.7755 (6.58)      13.6870 (5.46)      1.3461 (8.64)      13.4574 (5.46)      1.0885 (5.97)          5;2   73.0619 (0.18)         34           1
+test_benchmark_query11       2.2513 (1.0)        3.0068 (1.0)        2.5058 (1.0)       0.1558 (1.0)        2.4668 (1.0)       0.1981 (1.09)         49;3  399.0724 (1.0)         169           1
+test_benchmark_query12     121.2632 (53.86)    153.5852 (51.08)    133.8370 (53.41)    12.5579 (80.61)    134.7398 (54.62)    15.5257 (85.22)         2;0    7.4718 (0.02)          5           1
+test_benchmark_query13      44.1554 (19.61)     53.0456 (17.64)     47.5498 (18.98)     2.4732 (15.88)     46.6696 (18.92)     3.5610 (19.55)         6;0   21.0306 (0.05)         19           1
+test_benchmark_query2       15.2709 (6.78)      16.2742 (5.41)      15.5628 (6.21)      0.3524 (2.26)      15.3892 (6.24)      0.3542 (1.94)          1;1   64.2557 (0.16)          7           1
+test_benchmark_query3       94.6347 (42.03)    122.8994 (40.87)    100.1558 (39.97)     9.3648 (60.11)     96.5729 (39.15)     3.4063 (18.70)         1;1    9.9844 (0.03)          8           1
+test_benchmark_query4       10.8033 (4.80)      13.9803 (4.65)      11.8322 (4.72)      0.6489 (4.17)      11.6927 (4.74)      0.5927 (3.25)          8;2   84.5150 (0.21)         34           1
+test_benchmark_query5      277.5542 (123.28)   355.7046 (118.30)   309.0173 (123.32)   30.9981 (198.98)   294.6790 (119.46)   42.4816 (233.18)        2;0    3.2361 (0.01)          5           1
+test_benchmark_query6      219.5089 (97.50)    250.2917 (83.24)    234.2067 (93.47)    13.4870 (86.57)    235.4282 (95.44)    24.3973 (133.91)        2;0    4.2697 (0.01)          5           1
+test_benchmark_query7      332.8690 (147.85)   447.3971 (148.80)   370.5523 (147.88)   49.7514 (319.36)   341.4251 (138.41)   72.0663 (395.56)        1;0    2.6987 (0.01)          5           1
+test_benchmark_query8        4.6767 (2.08)       5.5904 (1.86)       4.9471 (1.97)      0.2303 (1.48)       4.8707 (1.97)      0.1822 (1.0)           5;2  202.1398 (0.51)         19           1
+test_benchmark_query9       57.0755 (25.35)     72.6559 (24.16)     62.1364 (24.80)     6.0682 (38.95)     60.2492 (24.42)     4.9979 (27.43)         1;1   16.0936 (0.04)          5           1
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Legend:
+  Outliers: 1 Standard Deviation from Mean; 1.5 IQR (InterQuartile Range) from 1st Quartile and 3rd Quartile.
+  OPS: Operations Per Second, computed as 1 / Mean
+=========================== short test summary info ============================
+FAILED benchmark_query.py::test_benchmark_query1 - AssertionError: ic1 row 7:...
+FAILED benchmark_query.py::test_benchmark_query14 - RuntimeError: Buffer mana...
+======================== 2 failed, 12 passed in 18.83s =========================
