@@ -37,6 +37,8 @@ The script extracts data to ignored `csv/` and skips downloading when that direc
 
 ## Ingest the data as a graph
 
+![Graph schema](assets/ldbc-snb-schema.png)
+
 Each engine directory contains its ingestion script, queries and benchmark harness:
 
 | Engine | Instructions | Execution model |
