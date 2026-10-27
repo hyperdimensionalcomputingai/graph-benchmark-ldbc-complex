@@ -153,21 +153,21 @@ The runner uses at least five measured rounds per query, `time.perf_counter`, di
 
 [`results/`](results/) contains saved benchmark output, and [`results/compare.py`](results/compare.py) prints a comparison table. Results apply to the engine versions and deployment configurations recorded with each run. Before comparing systems, use a documented machine, database configuration and benchmark protocol.
 
-The latest runs (Apple M5, 24 GB, macOS 26.6.2) give these mean latencies in milliseconds. Neo4j, Kuzu and Ladybug ran on 2026-10-24; lance-csr 0.3.1 was re-run on its own with `./run_benchmarks.sh lance_csr` on 2026-10-27, on battery power, which can throttle the CPU (see [`results/environment.yml`](results/environment.yml)). Each number in brackets is Neo4j's latency divided by that engine's (higher is faster than Neo4j); `n/a` marks a wrong answer or error. Ladybug's IC1 returned a wrong answer and its IC14 ran out of buffer-manager memory.
+The latest runs (Apple M5, 24 GB, macOS 26.6.2) give these mean latencies in milliseconds. Neo4j, Kuzu and Ladybug ran on 2026-10-24; lance-csr 0.3.1 was re-run on its own with `./run_benchmarks.sh lance_csr` on 2026-10-27 (see [`results/environment.yml`](results/environment.yml)). Each number in brackets is Neo4j's latency divided by that engine's (higher is faster than Neo4j); `n/a` marks a wrong answer or error. Ladybug's IC1 returned a wrong answer and its IC14 ran out of buffer-manager memory.
 
 | Query | neo4j-2026.09.0 (ms) | kuzu-0.11.3 (ms) | ladybug-0.21.2 (ms) | lance-csr-0.3.1-lazy (ms) | lance-csr-0.3.1-memory (ms) |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| IC1 | 51.4 | 13.5 (3.80x) | n/a | 32.8 (1.57x) | 26.3 (1.95x) |
-| IC2 | 44.7 | 25.0 (1.79x) | 15.6 (2.87x) | 26.2 (1.70x) | 2.6 (17.12x) |
-| IC3 | 894.9 | 105.2 (8.51x) | 100.2 (8.94x) | 417.8 (2.14x) | 58.7 (15.25x) |
-| IC4 | 13.1 | 29.7 (0.44x) | 11.8 (1.10x) | 13.2 (0.99x) | 6.2 (2.10x) |
-| IC5 | 1022.6 | 747.7 (1.37x) | 309.0 (3.31x) | 110.0 (9.29x) | 77.1 (13.27x) |
-| IC6 | 231.2 | 1114.8 (0.21x) | 234.2 (0.99x) | 26.2 (8.83x) | 23.0 (10.07x) |
-| IC7 | 7.1 | 453.7 (0.02x) | 370.6 (0.02x) | 32.7 (0.22x) | 21.0 (0.34x) |
-| IC8 | 3.0 | 73.4 (0.04x) | 4.9 (0.61x) | 3.1 (0.97x) | 2.0 (1.48x) |
-| IC9 | 802.3 | 131.0 (6.13x) | 62.1 (12.91x) | 819.6 (0.98x) | 38.2 (21.02x) |
-| IC10 | 91.7 | 74.9 (1.22x) | 13.7 (6.70x) | 138.4 (0.66x) | 105.0 (0.87x) |
-| IC11 | 11.0 | 4.7 (2.34x) | 2.5 (4.40x) | 5.9 (1.86x) | 3.7 (3.01x) |
-| IC12 | 133.9 | 92.3 (1.45x) | 133.8 (1.00x) | 28.9 (4.63x) | 19.9 (6.72x) |
-| IC13 | 0.9 | 14.2 (0.06x) | 47.5 (0.02x) | 1.5 (0.62x) | 1.1 (0.86x) |
-| IC14 | 522.6 | 1871.2 (0.28x) | n/a | 48.6 (10.76x) | 47.7 (10.96x) |
+| IC1 | 51.4 | 13.5 (3.80x) | n/a | 32.2 (1.60x) | 26.2 (1.96x) |
+| IC2 | 44.7 | 25.0 (1.79x) | 15.6 (2.87x) | 26.2 (1.71x) | 2.7 (16.35x) |
+| IC3 | 894.9 | 105.2 (8.51x) | 100.2 (8.94x) | 424.8 (2.11x) | 59.3 (15.09x) |
+| IC4 | 13.1 | 29.7 (0.44x) | 11.8 (1.10x) | 13.4 (0.97x) | 5.9 (2.20x) |
+| IC5 | 1022.6 | 747.7 (1.37x) | 309.0 (3.31x) | 106.4 (9.61x) | 81.5 (12.55x) |
+| IC6 | 231.2 | 1114.8 (0.21x) | 234.2 (0.99x) | 27.1 (8.52x) | 24.7 (9.37x) |
+| IC7 | 7.1 | 453.7 (0.02x) | 370.6 (0.02x) | 32.3 (0.22x) | 20.7 (0.34x) |
+| IC8 | 3.0 | 73.4 (0.04x) | 4.9 (0.61x) | 3.1 (0.98x) | 2.0 (1.47x) |
+| IC9 | 802.3 | 131.0 (6.13x) | 62.1 (12.91x) | 825.0 (0.97x) | 41.8 (19.20x) |
+| IC10 | 91.7 | 74.9 (1.22x) | 13.7 (6.70x) | 136.6 (0.67x) | 100.2 (0.91x) |
+| IC11 | 11.0 | 4.7 (2.34x) | 2.5 (4.40x) | 6.0 (1.82x) | 3.7 (2.96x) |
+| IC12 | 133.9 | 92.3 (1.45x) | 133.8 (1.00x) | 26.8 (5.00x) | 19.8 (6.77x) |
+| IC13 | 0.9 | 14.2 (0.06x) | 47.5 (0.02x) | 1.5 (0.63x) | 1.1 (0.83x) |
+| IC14 | 522.6 | 1871.2 (0.28x) | n/a | 47.9 (10.91x) | 46.8 (11.17x) |
