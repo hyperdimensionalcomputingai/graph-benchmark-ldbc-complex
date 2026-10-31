@@ -4,7 +4,7 @@ This section describes how to run the LDBC SNB Interactive complex queries on [l
 
 ## Setup
 
-lance-csr is embedded: it runs inside the Python process, with no server. The project pins `lance-csr` to `0.3.1`; run `uv sync --frozen` from the repository root to install the benchmark dependencies.
+lance-csr is embedded: it runs inside the Python process, with no server. The project pins `lance-csr` to `0.5.1`; run `uv sync --frozen` from the repository root to install the benchmark dependencies.
 
 ## Build graph
 
