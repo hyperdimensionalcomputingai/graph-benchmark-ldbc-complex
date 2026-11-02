@@ -24,7 +24,7 @@ FLAGS=(
   --benchmark-disable-gc
   --benchmark-sort=fullname
 )
-for run in "kuzu kuzu-0.11.3" "ladybugdb ladybug-0.21.2" "neo4j neo4j-2026.09.0" \
+for run in "kuzu kuzu-0.11.3" "ladybugdb ladybug-0.22.1" "neo4j neo4j-2026.09.0" \
   "lance_csr lance-csr-0.5.1-memory memory" "lance_csr lance-csr-0.5.1-lazy lazy"; do
   read -r dir name mode <<< "$run"
   if [ $# -gt 0 ] && [[ ! " $* " =~ " $dir " ]]; then continue; fi
