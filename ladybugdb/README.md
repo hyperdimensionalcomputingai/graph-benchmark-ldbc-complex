@@ -4,7 +4,7 @@ This section describes how to run the LDBC SNB Interactive complex queries on [L
 
 ## Setup
 
-Because Ladybug is an embedded graph database, the database is tightly coupled with the application layer -- there is no server to set up and run. The project pins Ladybug to `0.21.2`; run `uv sync --frozen` from the repository root to install the benchmark dependencies.
+Because Ladybug is an embedded graph database, the database is tightly coupled with the application layer -- there is no server to set up and run. The project pins Ladybug to `0.22.1`; run `uv sync --frozen` from the repository root to install the benchmark dependencies.
 
 ## Build graph
 
@@ -42,3 +42,5 @@ uv run --frozen pytest benchmark_query.py --benchmark-min-rounds=5 --benchmark-d
 ```
 
 Each test checks its result against the golden answer in `../expected/`.
+
+The 0.22.1 run passed all 14 golden-answer checks using the existing SF1 database and indexes. IC1 and IC14, which failed on 0.21.2, both passed without query changes. See the [results and comparison caveats](../README.md#results); fresh ingestion was not tested for this upgrade.

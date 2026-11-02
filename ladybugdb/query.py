@@ -19,9 +19,9 @@ neo4j/query.py, with these Kuzu/Ladybug differences:
   subqueries are much slower here). Kuzu rejects sum() over an alias that came from an
   earlier aggregation ("nested aggregation"), so the step weight goes through UNWIND.
 
-IC1 fails its golden check on Ladybug 0.21.2 and is reported as n/a: when a node is matched
-with an inline property map like (f:Person {firstName: ...}), an OPTIONAL MATCH that finds
-nothing nulls all of f's properties. Kuzu 0.11.3 isn't affected.
+IC1 failed its golden check on Ladybug 0.21.2: when a node was matched with an inline
+property map like (f:Person {firstName: ...}), an OPTIONAL MATCH that found nothing
+nulled all of f's properties. The same query passes on 0.22.1; Kuzu 0.11.3 was unaffected.
 
 Fixed parameters use local SF1 person IDs and IC3 countries; other values follow
 the official examples. Each query uses one fixture, not a generated workload.
