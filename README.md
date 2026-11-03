@@ -153,25 +153,27 @@ The runner uses at least five measured rounds per query, `time.perf_counter`, di
 
 [`results/`](results/) contains saved benchmark output, and [`results/compare.py`](results/compare.py) prints a comparison table. Results apply to the engine versions and deployment configurations recorded with each run. Before comparing systems, use a documented machine, database configuration and benchmark protocol.
 
-The saved runs below used an Apple M5 with 24 GB RAM and macOS 26.6.2. Neo4j, Kuzu and Ladybug 0.21.2 ran on 2026-10-24; lance-csr 0.5.1 ran on 2026-10-31. Ladybug 0.22.1 was run on its own with `./run_benchmarks.sh ladybugdb` on 2026-11-01 (2026-11-02 UTC, as recorded by the runner in [`results/environment.yml`](results/environment.yml)), on AC power, using the existing SF1 database and indexes. The saved output is a repeat run requested after the machine was quiet. Other engines were not re-run for this upgrade.
+The saved runs below used an Apple M5 with 24 GB RAM and macOS 26.6.2. Neo4j, Kuzu and Ladybug 0.21.2 ran on 2026-10-24; Ladybug 0.22.1 ran on 2026-11-01 (2026-11-02 UTC) as a repeat run after the machine was quiet. lance-csr 0.6.1 was run on its own with `./run_benchmarks.sh lance_csr` on 2026-11-03, as recorded by the runner in [`results/environment.yml`](results/environment.yml), on AC power, using the existing `graph_lance/` datasets. Other engines were not re-run for this upgrade.
 
 The table gives mean latencies in milliseconds. Each number in brackets is Neo4j's latency divided by that engine's (higher is faster than Neo4j); `n/a` marks a wrong answer or error. These are separate runs with one fixed parameter set per query, not a controlled same-session comparison of versions.
 
-| Query | neo4j-2026.09.0 (ms) | kuzu-0.11.3 (ms) | ladybug-0.21.2 (ms) | ladybug-0.22.1 (ms) | lance-csr-0.5.1-lazy (ms) | lance-csr-0.5.1-memory (ms) |
+| Query | neo4j-2026.09.0 (ms) | kuzu-0.11.3 (ms) | ladybug-0.21.2 (ms) | ladybug-0.22.1 (ms) | lance-csr-0.6.1-lazy (ms) | lance-csr-0.6.1-memory (ms) |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| IC1 | 51.4 | 13.5 (3.80x) | n/a | 36.8 (1.40x) | 34.3 (1.50x) | 24.2 (2.13x) |
-| IC2 | 44.7 | 25.0 (1.79x) | 15.6 (2.87x) | 6.1 (7.34x) | 25.7 (1.74x) | 2.5 (17.64x) |
-| IC3 | 894.9 | 105.2 (8.51x) | 100.2 (8.94x) | 116.3 (7.69x) | 171.3 (5.22x) | 25.4 (35.20x) |
-| IC4 | 13.1 | 29.7 (0.44x) | 11.8 (1.10x) | 5.6 (2.34x) | 13.0 (1.01x) | 5.9 (2.20x) |
-| IC5 | 1022.6 | 747.7 (1.37x) | 309.0 (3.31x) | 263.0 (3.89x) | 110.4 (9.26x) | 77.9 (13.13x) |
-| IC6 | 231.2 | 1114.8 (0.21x) | 234.2 (0.99x) | 9.6 (23.97x) | 23.9 (9.69x) | 21.6 (10.70x) |
-| IC7 | 7.1 | 453.7 (0.02x) | 370.6 (0.02x) | 304.7 (0.02x) | 23.1 (0.31x) | 14.7 (0.48x) |
-| IC8 | 3.0 | 73.4 (0.04x) | 4.9 (0.61x) | 0.9 (3.44x) | 3.3 (0.91x) | 2.3 (1.31x) |
-| IC9 | 802.3 | 131.0 (6.13x) | 62.1 (12.91x) | 57.1 (14.05x) | 308.5 (2.60x) | 37.5 (21.37x) |
-| IC10 | 91.7 | 74.9 (1.22x) | 13.7 (6.70x) | 11.5 (7.94x) | 129.4 (0.71x) | 99.2 (0.92x) |
-| IC11 | 11.0 | 4.7 (2.34x) | 2.5 (4.40x) | 1.7 (6.53x) | 5.4 (2.03x) | 3.1 (3.58x) |
-| IC12 | 133.9 | 92.3 (1.45x) | 133.8 (1.00x) | 22.8 (5.88x) | 21.7 (6.17x) | 18.8 (7.11x) |
-| IC13 | 0.9 | 14.2 (0.06x) | 47.5 (0.02x) | 48.5 (0.02x) | 1.5 (0.63x) | 1.1 (0.84x) |
-| IC14 | 522.6 | 1871.2 (0.28x) | n/a | 88.0 (5.94x) | 50.9 (10.26x) | 49.2 (10.63x) |
+| IC1 | 51.4 | 13.5 (3.80x) | n/a | 36.8 (1.40x) | 31.3 (1.64x) | 22.2 (2.32x) |
+| IC2 | 44.7 | 25.0 (1.79x) | 15.6 (2.87x) | 6.1 (7.34x) | 25.5 (1.75x) | 2.4 (18.87x) |
+| IC3 | 894.9 | 105.2 (8.51x) | 100.2 (8.94x) | 116.3 (7.69x) | 162.6 (5.50x) | 25.5 (35.16x) |
+| IC4 | 13.1 | 29.7 (0.44x) | 11.8 (1.10x) | 5.6 (2.34x) | 12.5 (1.04x) | 6.0 (2.19x) |
+| IC5 | 1022.6 | 747.7 (1.37x) | 309.0 (3.31x) | 263.0 (3.89x) | 116.3 (8.79x) | 75.6 (13.53x) |
+| IC6 | 231.2 | 1114.8 (0.21x) | 234.2 (0.99x) | 9.6 (23.97x) | 21.7 (10.66x) | 19.7 (11.71x) |
+| IC7 | 7.1 | 453.7 (0.02x) | 370.6 (0.02x) | 304.7 (0.02x) | 14.4 (0.50x) | 9.3 (0.77x) |
+| IC8 | 3.0 | 73.4 (0.04x) | 4.9 (0.61x) | 0.9 (3.44x) | 3.2 (0.92x) | 2.2 (1.38x) |
+| IC9 | 802.3 | 131.0 (6.13x) | 62.1 (12.91x) | 57.1 (14.05x) | 298.7 (2.69x) | 38.5 (20.85x) |
+| IC10 | 91.7 | 74.9 (1.22x) | 13.7 (6.70x) | 11.5 (7.94x) | 34.3 (2.67x) | 23.9 (3.83x) |
+| IC11 | 11.0 | 4.7 (2.34x) | 2.5 (4.40x) | 1.7 (6.53x) | 5.3 (2.07x) | 2.8 (3.88x) |
+| IC12 | 133.9 | 92.3 (1.45x) | 133.8 (1.00x) | 22.8 (5.88x) | 20.6 (6.51x) | 16.2 (8.24x) |
+| IC13 | 0.9 | 14.2 (0.06x) | 47.5 (0.02x) | 48.5 (0.02x) | 1.4 (0.66x) | 1.0 (0.90x) |
+| IC14 | 522.6 | 1871.2 (0.28x) | n/a | 88.0 (5.94x) | 50.4 (10.37x) | 47.3 (11.04x) |
 
 Ladybug 0.22.1 passed all 14 golden-answer checks, including IC1 and IC14, which failed on 0.21.2 with a wrong answer and buffer-manager memory exhaustion respectively. IC6's mean fell from 234.2 ms to 9.6 ms, while IC3's rose from 100.2 ms to 116.3 ms. The saved 0.21.2 output is retained as a historical baseline; these observations apply only to this fixture and benchmark configuration.
+
+lance-csr 0.6.1 passed all 14 golden-answer checks in both modes. Compared with the 0.5.1 run on 2026-10-31, IC10's mean fell from 99.2 ms to 23.9 ms in memory mode and from 129.4 ms to 34.3 ms in lazy mode, and IC7's fell from 14.7 ms to 9.3 ms (memory) and from 23.1 ms to 14.4 ms (lazy); every other mean was within 15% of its 0.5.1 value. As above, these are separate runs, not a same-session comparison. The 0.5.1 output is not retained.
