@@ -1,10 +1,8 @@
 """
 LDBC SNB Interactive complex queries IC1-IC14 on lance-csr.
 
-IC1-IC13 run neo4j/query.py's Cypher text and parameters unchanged. IC14's official text uses
-reduce(), which is outside openCypher's standardisation scope and which lance-csr doesn't
-implement, so it is ported with in-scope constructs: each path step's weight is a pair of
-pattern comprehensions (one per direction, as the official WHERE accepts either), summed per path.
+IC1-IC14 run neo4j/query.py's Cypher text and parameters unchanged. lance_csr/README.md gives a
+faster, equivalent IC14 that weighs each path step with pattern comprehensions instead of reduce().
 
 lance-csr has no query timeout, so QUERY_TIMEOUT_SECONDS doesn't apply here.
 
@@ -75,24 +73,6 @@ def engine() -> CypherEngine:
 
 def _execute(engine: CypherEngine, query: str, params: dict[str, Any]) -> list[dict[str, Any]]:
     return engine.execute(query, params).to_pylist()
-
-
-PORTS = {
-    14: """
-        MATCH path = allShortestPaths((person1:Person {ID: $person1Id})-[:knows*0..]-(person2:Person {ID: $person2Id}))
-        UNWIND range(0, length(path) - 1) AS i
-        WITH path, nodes(path)[i] AS aId, nodes(path)[i + 1] AS bId
-        MATCH (a:Person {ID: aId}), (b:Person {ID: bId})
-        WITH path,
-             size([(a)<-[:commentHasCreator]-(:Comment)-[:replyOfPost]->(:Post)-[:postHasCreator]->(b) | 1])
-           + size([(b)<-[:commentHasCreator]-(:Comment)-[:replyOfPost]->(:Post)-[:postHasCreator]->(a) | 1]) AS postReplies,
-             size([(a)<-[:commentHasCreator]-(:Comment)-[:replyOfComment]->(:Comment)-[:commentHasCreator]->(b) | 1])
-           + size([(b)<-[:commentHasCreator]-(:Comment)-[:replyOfComment]->(:Comment)-[:commentHasCreator]->(a) | 1]) AS commentReplies
-        RETURN [n IN nodes(path) | n.ID] AS personIdsInPath,
-               sum(postReplies * 1.0 + commentReplies * 0.5) AS pathWeight
-        ORDER BY pathWeight DESC
-    """,
-}
 
 
 def run_query1(engine: CypherEngine):
@@ -421,7 +401,32 @@ def run_query13(engine: CypherEngine):
 def run_query14(engine: CypherEngine):
     "IC14. Trusted connection paths"
     params = {"person1Id": 1131, "person2Id": 19791209300775}
-    query = PORTS[14]
+    query = """
+        MATCH path = allShortestPaths((person1:Person {ID: $person1Id})-[:knows*0..]-(person2:Person {ID: $person2Id}))
+        WITH collect(path) AS paths
+        UNWIND paths AS path
+        WITH path, relationships(path) AS rels_in_path
+        WITH
+            [n IN nodes(path) | n.ID] AS personIdsInPath,
+            [r IN rels_in_path |
+                reduce(w = 0.0, v IN [
+                    (a:Person)<-[:commentHasCreator]-(:Comment)-[:replyOfPost]->(:Post)-[:postHasCreator]->(b:Person)
+                    WHERE (a.ID = startNode(r).ID AND b.ID = endNode(r).ID) OR (a.ID = endNode(r).ID AND b.ID = startNode(r).ID)
+                    | 1.0] | w + v)
+            ] AS weight1,
+            [r IN rels_in_path |
+                reduce(w = 0.0, v IN [
+                    (a:Person)<-[:commentHasCreator]-(:Comment)-[:replyOfComment]->(:Comment)-[:commentHasCreator]->(b:Person)
+                    WHERE (a.ID = startNode(r).ID AND b.ID = endNode(r).ID) OR (a.ID = endNode(r).ID AND b.ID = startNode(r).ID)
+                    | 0.5] | w + v)
+            ] AS weight2
+        WITH
+            personIdsInPath,
+            reduce(w = 0.0, v IN weight1 | w + v) AS w1,
+            reduce(w = 0.0, v IN weight2 | w + v) AS w2
+        RETURN personIdsInPath, (w1 + w2) AS pathWeight
+        ORDER BY pathWeight DESC
+    """
     return _execute(engine, query, params)
 
 

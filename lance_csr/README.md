@@ -16,7 +16,7 @@ uv run build_graph.py
 
 ## Execute queries
 
-`query.py` runs Neo4j's IC1–IC13 Cypher text and parameters from [`../neo4j/query.py`](../neo4j/query.py) unchanged. IC14's official text uses `reduce()`, which is outside openCypher's [standardisation scope](https://github.com/opencypher/openCypher/blob/master/docs/standardisation-scope.adoc), so it is ported with pattern comprehensions; the module docstring describes the port. Run them all once and print the results:
+`query.py` runs Neo4j's IC1–IC14 Cypher text and parameters from [`../neo4j/query.py`](../neo4j/query.py) unchanged. Run them all once and print the results:
 
 ```sh
 uv run query.py
@@ -28,6 +28,25 @@ uv run query.py
 | --- | --- |
 | `memory` (default) | every table loaded into memory as Arrow before the first query |
 | `lazy` | Lance datasets read from disk as queries need them |
+
+### Alternative IC14 syntax
+
+The benchmark runs IC14's official text, which weighs each path step with `reduce()` over pattern comprehensions. The query below returns the same rows (it passes the same golden-answer check) and ran about 6x faster on lance-csr 0.9.1 with data in memory (about 51 ms against 315 ms). It looks up each pair of adjacent people on the path, counts replies in each direction with `size()` of a pattern comprehension, and sums the step weights per path. It isn't used in the saved results, which keep every engine on the official text where it can run.
+
+```cypher
+MATCH path = allShortestPaths((person1:Person {ID: $person1Id})-[:knows*0..]-(person2:Person {ID: $person2Id}))
+UNWIND range(0, length(path) - 1) AS i
+WITH path, nodes(path)[i] AS aId, nodes(path)[i + 1] AS bId
+MATCH (a:Person {ID: aId}), (b:Person {ID: bId})
+WITH path,
+     size([(a)<-[:commentHasCreator]-(:Comment)-[:replyOfPost]->(:Post)-[:postHasCreator]->(b) | 1])
+   + size([(b)<-[:commentHasCreator]-(:Comment)-[:replyOfPost]->(:Post)-[:postHasCreator]->(a) | 1]) AS postReplies,
+     size([(a)<-[:commentHasCreator]-(:Comment)-[:replyOfComment]->(:Comment)-[:commentHasCreator]->(b) | 1])
+   + size([(b)<-[:commentHasCreator]-(:Comment)-[:replyOfComment]->(:Comment)-[:commentHasCreator]->(a) | 1]) AS commentReplies
+RETURN [n IN nodes(path) | n.ID] AS personIdsInPath,
+       sum(postReplies * 1.0 + commentReplies * 0.5) AS pathWeight
+ORDER BY pathWeight DESC
+```
 
 The runner doesn't pass lance-csr's `timeout` argument, so `QUERY_TIMEOUT_SECONDS` doesn't apply and queries run without a limit.
 
