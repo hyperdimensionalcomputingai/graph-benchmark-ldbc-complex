@@ -9,10 +9,11 @@ requires-python = ">=3.13"
 dependencies = [
     "kuzu>=0.11.3",
     "ladybug==0.22.1",
-    "lance-csr==0.9.1",
+    "lance-csr==0.12.0",
     "neo4j>=6.1.0",
     "polars>=1.37.1",
     "pyarrow>=23.0.0",
+    "pylance>=14.0.2",
     "pytest>=9.0.2",
     "pytest-asyncio>=1.3.0",
     "pytest-benchmark>=5.2.3",
