@@ -153,25 +153,25 @@ The runner uses at least five measured rounds per query, `time.perf_counter`, di
 
 [`results/`](results/) contains saved benchmark output, and [`results/compare.py`](results/compare.py) prints a comparison table; output from older engine versions is kept in [`results/archived/`](results/archived/). Results apply to the engine versions and deployment configurations recorded with each run. Before comparing systems, use a documented machine, database configuration and benchmark protocol.
 
-The saved runs below used an Apple M5 with 24 GB RAM and macOS 26.6.2. Neo4j and Kuzu ran on 2026-10-24; Ladybug 0.22.1 ran on 2026-11-01 (2026-11-02 UTC) as a repeat run after the machine was quiet. lance-csr 0.9.1 was run on its own with `./run_benchmarks.sh lance_csr` on 2026-11-10, as recorded by the runner in [`results/environment.yml`](results/environment.yml), on AC power, using the existing `graph_lance/` datasets. Other engines were not re-run for this upgrade.
+The saved runs below used an Apple M5 with 24 GB RAM and macOS 26.6.2. Neo4j and Kuzu ran on 2026-10-24; Ladybug 0.22.1 ran on 2026-11-01 (2026-11-02 UTC) as a repeat run after the machine was quiet. lance-csr 0.12.0 was run on its own with `./run_benchmarks.sh lance_csr` on 2026-11-15 (the first of two back-to-back runs once the machine was quiet; the second was within 10% of it on 25 of 28 measurements and 13–19% slower on IC2, IC6 and IC9 in memory), as recorded by the runner in [`results/environment.yml`](results/environment.yml), on AC power, after rebuilding the `graph_lance/` datasets with pylance 14.0.3 (Lance file format 2.2). Other engines were not re-run for this upgrade.
 
 The table gives mean latencies in milliseconds. Each number in brackets is Neo4j's latency divided by that engine's (higher is faster than Neo4j); `n/a` marks a wrong answer or error. These are separate runs with one fixed parameter set per query, not a controlled same-session comparison of versions.
 
-| Query | neo4j-2026.09.0 (ms) | kuzu-0.11.3 (ms) | ladybug-0.22.1 (ms) | lance-csr-0.9.1-lazy (ms) | lance-csr-0.9.1-memory (ms) |
+| Query | neo4j-2026.09.0 (ms) | kuzu-0.11.3 (ms) | ladybug-0.22.1 (ms) | lance-csr-0.12.0-lazy (ms) | lance-csr-0.12.0-memory (ms) |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| IC1 | 51.4 | 13.5 (3.80x) | 36.8 (1.40x) | 32.9 (1.56x) | 23.4 (2.19x) |
-| IC2 | 44.7 | 25.0 (1.79x) | 6.1 (7.34x) | 26.0 (1.72x) | 2.8 (16.07x) |
-| IC3 | 894.9 | 105.2 (8.51x) | 116.3 (7.69x) | 172.7 (5.18x) | 26.5 (33.77x) |
-| IC4 | 13.1 | 29.7 (0.44x) | 5.6 (2.34x) | 13.3 (0.98x) | 5.9 (2.20x) |
-| IC5 | 1022.6 | 747.7 (1.37x) | 263.0 (3.89x) | 103.8 (9.85x) | 82.7 (12.36x) |
-| IC6 | 231.2 | 1114.8 (0.21x) | 9.6 (23.97x) | 25.4 (9.10x) | 22.2 (10.42x) |
-| IC7 | 7.1 | 453.7 (0.02x) | 304.7 (0.02x) | 14.1 (0.51x) | 9.6 (0.75x) |
-| IC8 | 3.0 | 73.4 (0.04x) | 0.9 (3.44x) | 3.4 (0.89x) | 2.3 (1.33x) |
-| IC9 | 802.3 | 131.0 (6.13x) | 57.1 (14.05x) | 324.4 (2.47x) | 41.9 (19.14x) |
-| IC10 | 91.7 | 74.9 (1.22x) | 11.5 (7.94x) | 29.8 (3.08x) | 21.0 (4.37x) |
-| IC11 | 11.0 | 4.7 (2.34x) | 1.7 (6.53x) | 5.6 (1.96x) | 3.0 (3.66x) |
-| IC12 | 133.9 | 92.3 (1.45x) | 22.8 (5.88x) | 23.7 (5.66x) | 21.7 (6.16x) |
-| IC13 | 0.9 | 14.2 (0.06x) | 48.5 (0.02x) | 1.4 (0.64x) | 1.1 (0.86x) |
-| IC14 | 522.6 | 1871.2 (0.28x) | 88.0 (5.94x) | 312.9 (1.67x) | 302.0 (1.73x) |
+| IC1 | 51.4 | 13.5 (3.80x) | 36.8 (1.40x) | 34.4 (1.49x) | 24.5 (2.10x) |
+| IC2 | 44.7 | 25.0 (1.79x) | 6.1 (7.34x) | 25.1 (1.79x) | 2.5 (18.22x) |
+| IC3 | 894.9 | 105.2 (8.51x) | 116.3 (7.69x) | 163.6 (5.47x) | 25.0 (35.78x) |
+| IC4 | 13.1 | 29.7 (0.44x) | 5.6 (2.34x) | 13.2 (0.99x) | 5.8 (2.23x) |
+| IC5 | 1022.6 | 747.7 (1.37x) | 263.0 (3.89x) | 94.6 (10.81x) | 72.1 (14.19x) |
+| IC6 | 231.2 | 1114.8 (0.21x) | 9.6 (23.97x) | 24.3 (9.53x) | 19.8 (11.68x) |
+| IC7 | 7.1 | 453.7 (0.02x) | 304.7 (0.02x) | 14.0 (0.51x) | 9.8 (0.73x) |
+| IC8 | 3.0 | 73.4 (0.04x) | 0.9 (3.44x) | 3.3 (0.91x) | 2.3 (1.32x) |
+| IC9 | 802.3 | 131.0 (6.13x) | 57.1 (14.05x) | 232.4 (3.45x) | 35.6 (22.52x) |
+| IC10 | 91.7 | 74.9 (1.22x) | 11.5 (7.94x) | 30.0 (3.05x) | 20.7 (4.42x) |
+| IC11 | 11.0 | 4.7 (2.34x) | 1.7 (6.53x) | 5.5 (1.99x) | 2.9 (3.76x) |
+| IC12 | 133.9 | 92.3 (1.45x) | 22.8 (5.88x) | 20.1 (6.65x) | 15.9 (8.40x) |
+| IC13 | 0.9 | 14.2 (0.06x) | 48.5 (0.02x) | 1.4 (0.65x) | 1.1 (0.86x) |
+| IC14 | 522.6 | 1871.2 (0.28x) | 88.0 (5.94x) | 265.0 (1.97x) | 261.3 (2.00x) |
 
-Every engine returned the golden answer for all 14 queries. lance-csr with its data in memory had the lowest mean on five queries (IC2, IC3, IC5, IC9, IC12) and Ladybug on six (IC4, IC6, IC8, IC10, IC11, IC14); Neo4j was fastest on IC7 and IC13, and Kuzu on IC1. Reading lance-csr's datasets lazily from disk was 6–10x slower than the in-memory mode on IC2, IC3 and IC9, and up to about 2x slower elsewhere. lance-csr now runs Neo4j's official IC14 text, which takes about 300 ms; an equivalent rewrite without `reduce()`, documented in the [lance-csr README](lance_csr/README.md#alternative-ic14-syntax), took about 51 ms but isn't used here. These observations apply only to this fixture and benchmark configuration.
+Every engine returned the golden answer for all 14 queries. lance-csr with its data in memory had the lowest mean on five queries (IC2, IC3, IC5, IC9, IC12) and Ladybug on six (IC4, IC6, IC8, IC10, IC11, IC14); Neo4j was fastest on IC7 and IC13, and Kuzu on IC1. Reading lance-csr's datasets lazily from disk was 6–10x slower than the in-memory mode on IC2, IC3 and IC9, and up to about 2x slower elsewhere. lance-csr now runs Neo4j's official IC14 text, which takes about 260 ms; an equivalent rewrite without `reduce()`, documented in the [lance-csr README](lance_csr/README.md#alternative-ic14-syntax), took about 51 ms on lance-csr 0.9.1 but isn't used here. These observations apply only to this fixture and benchmark configuration.
